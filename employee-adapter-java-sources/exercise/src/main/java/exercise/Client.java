@@ -20,10 +20,21 @@ public class Client {
       new EmployeeLDAP(Map.of("uid","302","givenName","Elena","sn","Garcia","mail","elena.garcia@example.org"))
     );
 
-    // TODO: Wrap each legacy object with the right adapter and collect into one list
-    List<Employee> all = new ArrayList<>();
+      // TODO: Wrap each legacy object with the right adapter and collect into one list
+      List<Employee> all = new ArrayList<>();
 
+      for (EmployeeCSV row : csvRows) {
+          all.add(new EmployeeCSVAdapter(row));
+      }
 
-    EmployeePrinter.print(all);
+      for (EmployeeDB row : dbRows) {
+          all.add(new EmployeeDBAdapter(row));
+      }
+
+      for (EmployeeLDAP row : ldapRows) {
+          all.add(new EmployeeLDAPAdapter(row));
+      }
+
+      EmployeePrinter.print(all);
   }
 }
