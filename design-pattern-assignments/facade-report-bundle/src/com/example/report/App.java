@@ -1,16 +1,23 @@
 package com.example.report;
-import java.nio.file.*; import java.util.*;
 
-public class App {
-    public static void main(String[] args) {
-        Map<String,Object> data = Map.of("name", "Quarterly");
-        JsonWriter jw = new JsonWriter(); 
-        Zipper z = new Zipper(); 
-        AuditLog log = new AuditLog();
-        Path json = jw.write(data, Path.of("out"), "report");
-        Path zip = z.zip(json, Path.of("out", "report.zip"));
-        log.log("exported " + zip);
-        System.out.println("DONE " + zip);
-        // TODO: Replace the above with a single call to ReportBundleFacade.export(...)
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.HashMap;
+import java.util.Map;
+
+public class App
+{
+    public static void main(String[] args)
+    {
+        Map<String, Object> data = new HashMap<>();
+        data.put("name", "Archisman");
+        data.put("score", 95);
+
+        Path outDir = Paths.get(".");
+        String baseName = "report";
+
+        ReportBundleFacade facade = new ReportBundleFacade();
+        Path zipPath = facade.export(data, outDir, baseName);
+        System.out.println("Exported to: " + zipPath);
     }
 }
